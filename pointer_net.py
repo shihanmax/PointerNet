@@ -283,8 +283,10 @@ class PointerNet(nn.Module):
                                lstm_layers,
                                dropout,
                                bidir)
+        
         self.decoder = Decoder(embedding_dim, hidden_dim)
-        self.decoder_input0 = Parameter(torch.FloatTensor(embedding_dim), requires_grad=False)
+        self.decoder_input0 = Parameter(torch.FloatTensor(embedding_dim), 
+                                        requires_grad=False)
 
         # Initialize decoder_input0
         nn.init.uniform(self.decoder_input0, -1, 1)
@@ -309,8 +311,8 @@ class PointerNet(nn.Module):
         encoder_outputs, encoder_hidden = self.encoder(embedded_inputs,
                                                        encoder_hidden0)
         if self.bidir:
-            decoder_hidden0 = (torch.cat(encoder_hidden[0][-2:], dim=-1),
-                               torch.cat(encoder_hidden[1][-2:], dim=-1))
+            decoder_hidden0 = torch.cat(
+                [encoder_hidden[0][-2:], encoder_hidden[1][-2:]], dim=-1)
         else:
             decoder_hidden0 = (encoder_hidden[0][-1],
                                encoder_hidden[1][-1])
@@ -319,4 +321,4 @@ class PointerNet(nn.Module):
                                                            decoder_hidden0,
                                                            encoder_outputs)
 
-        return  outputs, pointers
+        return outputs, pointers
