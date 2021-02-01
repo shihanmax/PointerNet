@@ -22,9 +22,9 @@ from Data_Generator import TSPDataset
 parser = argparse.ArgumentParser(description="Pytorch implementation of Pointer-Net")
 
 # Data
-parser.add_argument('--train_size', default=1000000, type=int, help='Training data size')
-parser.add_argument('--val_size', default=10000, type=int, help='Validation data size')
-parser.add_argument('--test_size', default=10000, type=int, help='Test data size')
+parser.add_argument('--train_size', default=10000, type=int, help='Training data size')
+parser.add_argument('--val_size', default=100, type=int, help='Validation data size')
+parser.add_argument('--test_size', default=100, type=int, help='Test data size')
 parser.add_argument('--batch_size', default=256, type=int, help='Batch size')
 # Train
 parser.add_argument('--nof_epoch', default=50000, type=int, help='Number of epochs')
