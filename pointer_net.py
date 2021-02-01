@@ -186,6 +186,7 @@ class Decoder(nn.Module):
 
         # (batch, seq_len)
         mask = self.mask.repeat(input_length).unsqueeze(0).repeat(batch_size, 1)
+        mask.to(torch.bool)
         self.att.init_inf(mask.size())
 
         # Generating arang(input_length), broadcasted across batch_size
@@ -241,6 +242,8 @@ class Decoder(nn.Module):
             # Update mask to ignore seen indices
             mask  = mask * (1 - one_hot_pointers)
 
+            mask.to(torch.bool)
+            
             # Get embedded inputs by max indices
             embedding_mask = one_hot_pointers.unsqueeze(2).expand(-1, -1, self.embedding_dim).byte()
             decoder_input = embedded_inputs[embedding_mask.data].view(batch_size, self.embedding_dim)
