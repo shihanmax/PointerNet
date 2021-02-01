@@ -95,8 +95,8 @@ for epoch in range(params.nof_epoch):
 
         loss = CCE(o, target_batch)
 
-        losses.append(loss.data[0])
-        batch_loss.append(loss.data[0])
+        losses.append(loss.item())
+        batch_loss.append(loss.item())
 
         model_optim.zero_grad()
         loss.backward()
