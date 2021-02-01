@@ -98,7 +98,7 @@ class Attention(nn.Module):
         self.context_linear = nn.Conv1d(input_dim, hidden_dim, 1, 1)
         self.V = Parameter(torch.FloatTensor(hidden_dim), requires_grad=True)
         self._inf = Parameter(torch.FloatTensor([float('-inf')]), requires_grad=False)
-        self.tanh = nn.Tanh()
+        self.tanh = torch.Tanh()
         self.softmax = nn.Softmax()
 
         # Initialize vector V
@@ -186,7 +186,6 @@ class Decoder(nn.Module):
 
         # (batch, seq_len)
         mask = self.mask.repeat(input_length).unsqueeze(0).repeat(batch_size, 1)
-        mask.to(torch.bool)
         self.att.init_inf(mask.size())
 
         # Generating arang(input_length), broadcasted across batch_size
@@ -240,12 +239,10 @@ class Decoder(nn.Module):
             one_hot_pointers = (runner == indices.unsqueeze(1).expand(-1, outs.size()[1])).float()
 
             # Update mask to ignore seen indices
-            mask  = mask * (1 - one_hot_pointers)
-
-            mask.to(torch.bool)
+            mask = mask * (1 - one_hot_pointers)
             
             # Get embedded inputs by max indices
-            embedding_mask = one_hot_pointers.unsqueeze(2).expand(-1, -1, self.embedding_dim).byte()
+            embedding_mask = one_hot_pointers.unsqueeze(2).expand(-1, -1, self.embedding_dim).to(torch.bool)
             decoder_input = embedded_inputs[embedding_mask.data].view(batch_size, self.embedding_dim)
 
             outputs.append(outs.unsqueeze(0))
