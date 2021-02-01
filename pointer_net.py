@@ -98,7 +98,7 @@ class Attention(nn.Module):
         self.context_linear = nn.Conv1d(input_dim, hidden_dim, 1, 1)
         self.V = Parameter(torch.FloatTensor(hidden_dim), requires_grad=True)
         self._inf = Parameter(torch.FloatTensor([float('-inf')]), requires_grad=False)
-        self.tanh = torch.Tanh()
+        self.tanh = nn.Tanh()
         self.softmax = nn.Softmax()
 
         # Initialize vector V
