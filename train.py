@@ -102,6 +102,6 @@ for epoch in range(params.nof_epoch):
         loss.backward()
         model_optim.step()
 
-        iterator.set_postfix(loss='{}'.format(loss.data[0]))
+        iterator.set_postfix(loss='{}'.format(loss.item()))
 
     iterator.set_postfix(loss=np.average(batch_loss))
